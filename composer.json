@@ -28,11 +28,11 @@
   "autoload": {
     "psr-4": {
       "Thojou\\Ilias\\Plugin\\Utils\\": "src/"
-    },
-    "autoload-dev": {
-      "psr-4": {
-        "Thojou\\Ilias\\Plugin\\Utils\\Tests\\": "tests/"
-      }
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Thojou\\Ilias\\Plugin\\Utils\\Tests\\": "tests/"
     }
   },
   "config": {
