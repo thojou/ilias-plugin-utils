@@ -41,7 +41,6 @@ See the [docs](./docs) directory for detailed usage guideline.
 **Test Bootstrap**
 * [bootstrap.php](./docs/bootstrap.md): A bootstrap file for setting up the test environment.
 
-
 **Test Cases**
 * [AbstractGUITestCase](./docs/test-case/abstract-gui-test-case.md): A base test case class for GUI-related tests.
 * [AbstractPluginTestCase](./docs/test-case/abstract-plugin-test-case.md): A base test case class for plugin-related tests.

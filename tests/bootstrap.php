@@ -11,7 +11,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-require_once __DIR__ . '/../Info/IliasRootDetector.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use Thojou\Ilias\Plugin\Utils\Info\IliasRootDetector;
 
@@ -20,7 +20,5 @@ $ILIAS_ROOT = IliasRootDetector::find(__DIR__);
 if(file_exists($ILIAS_ROOT . '/libs/composer/vendor/autoload.php')) {
     require_once $ILIAS_ROOT . '/libs/composer/vendor/autoload.php';
 }
-
-require_once __DIR__ . '/../../vendor/autoload.php';
 
 chdir($ILIAS_ROOT);
