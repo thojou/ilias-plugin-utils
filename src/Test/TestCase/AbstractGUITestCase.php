@@ -13,12 +13,8 @@ declare(strict_types=1);
 
 namespace Thojou\Ilias\Plugin\Utils\Test\TestCase;
 
-use ILIAS\HTTP\Wrapper\WrapperFactory;
-use ILIAS\Refinery\Factory as Refinery;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\ServerRequestInterface;
 use Thojou\Ilias\Plugin\Utils\Test\ContainerMockHelperInterface;
 use Thojou\Ilias\Plugin\Utils\Test\Traits\CommonHelperTrait;
 use Thojou\Ilias\Plugin\Utils\Test\Traits\ContainerMockHelperTrait;
@@ -77,15 +73,9 @@ abstract class AbstractGUITestCase extends TestCase implements ContainerMockHelp
      */
     public function mockPostRequest(array $properties, array $queryParameters = []): void
     {
-        $this->http ?? $this->registerHttp();
-        $this->request = $this->createMock(ServerRequestInterface::class);
-
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        $this->request->method('getServerParams')->willReturn(['REQUEST_METHOD' => 'POST']);
-        $this->request->method('getParsedBody')->willReturn($properties);
-        $this->request->method('getQueryParams')->willReturn($queryParameters);
-        $this->http->method('request')->willReturn($this->request);
-        $this->http->method('wrapper')->willReturn(new WrapperFactory($this->request));
+        $_POST = $properties;
+        $_GET = $queryParameters;
     }
 
     /**
@@ -95,14 +85,14 @@ abstract class AbstractGUITestCase extends TestCase implements ContainerMockHelp
      */
     public function mockGetRequest(array $queryParameters = []): void
     {
-        $this->http ?? $this->registerHttp();
-        $this->request = $this->createMock(ServerRequestInterface::class);
-
         $_SERVER['REQUEST_METHOD'] = 'GET';
-        $this->request->method('getServerParams')->willReturn(['REQUEST_METHOD' => 'GET']);
-        $this->request->method('getParsedBody')->willReturn([]);
-        $this->request->method('getQueryParams')->willReturn($queryParameters);
-        $this->http->method('request')->willReturn($this->request);
-        $this->http->method('wrapper')->willReturn(new WrapperFactory($this->request));
+        $_GET = $queryParameters;
+    }
+
+    protected function tearDown(): void
+    {
+        unset($_SERVER['REQUEST_METHOD']);
+        unset($_POST);
+        unset($_GET);
     }
 }

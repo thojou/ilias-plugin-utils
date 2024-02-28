@@ -65,7 +65,7 @@ class PluginContainerWrapper implements ContainerInterface
     {
         $id = $this->resolveId($id);
 
-        if(!$this->has($id)) {
+        if(!isset($this->container[$id])) {
             throw new PluginContainerNotFoundException("Service with id '$id' not found in PluginContainer.");
         }
 

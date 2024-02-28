@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Thojou\Ilias\Plugin\Utils\Test\Traits;
 
-use ilCoSourceCodePlugin;
 use ILIAS\DI\Container;
 use Thojou\Ilias\Plugin\Utils\Test\ContainerMockHelperInterface;
 

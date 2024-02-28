@@ -13,11 +13,9 @@ declare(strict_types=1);
 
 namespace Thojou\Ilias\Plugin\Utils\Test\Traits;
 
-use ilComponentFactory;
 use ilCtrl;
 use ilGlobalTemplate;
 use ILIAS\Data\Factory as DataFactory;
-use ILIAS\HTTP\Services as HttpService;
 use ILIAS\Refinery\Factory as Refinery;
 use ilLanguage;
 use ilObjUser;
@@ -54,16 +52,6 @@ trait CommonHelperTrait
      * @var ilLanguage&MockObject The mocked language object.
      */
     protected MockObject $language;
-
-    /**
-     * @var ilComponentFactory&MockObject The mocked component factory object.
-     */
-    protected MockObject $componentFactory;
-
-    /**
-     * @var HttpService&MockObject The mocked HTTP service object.
-     */
-    protected HttpService $http;
 
     /**
      * @var ServerRequestInterface&MockObject The mocked HTTP server request object.
@@ -140,34 +128,6 @@ trait CommonHelperTrait
     }
 
     /**
-     * Register and mock the component factory object.
-     *
-     * @return ilComponentFactory&MockObject The registered and mocked component factory object.
-     */
-    public function registerComponentFactory(): ilComponentFactory
-    {
-        $this->componentFactory = $this->createMock(ilComponentFactory::class);
-
-        $this->mockCoreService('component.factory', $this->componentFactory);
-
-        return $this->componentFactory;
-    }
-
-    /**
-     * Register and mock the HTTP service object.
-     *
-     * @return HttpService&MockObject The registered and mocked HTTP service object.
-     */
-    public function registerHttp(): HttpService
-    {
-        $this->http = $this->createMock(HttpService::class);
-
-        $this->mockCoreService('http', $this->http);
-
-        return $this->http;
-    }
-
-    /**
      * Register and mock the style definition object.
      *
      * @return ilStyleDefinition&MockObject The registered and mocked style definition object.
@@ -200,9 +160,7 @@ trait CommonHelperTrait
      */
     public function setupGUICommons(): void
     {
-        $this->registerComponentFactory();
         $this->registerCtrl();
-        $this->registerHttp();
         $this->registerLanguage();
         $this->registerRefinery();
         $this->registerStyleDefinition();

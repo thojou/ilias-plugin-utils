@@ -17,6 +17,7 @@ use stdClass;
 use ILIAS\DI\Container;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
+use Thojou\Ilias\Plugin\Utils\DI\PluginContainerException;
 use Thojou\Ilias\Plugin\Utils\DI\PluginContainerNotFoundException;
 use Thojou\Ilias\Plugin\Utils\DI\PluginContainerWrapper;
 use Thojou\Ilias\Plugin\Utils\Tests\DI\Fixtures\TestPluginContainer;
@@ -63,7 +64,6 @@ class PluginContainerTest extends TestCase
             ->method('offsetSet')
             ->with($this->equalTo('plugin_id'.'.' . stdClass::class));
 
-
         TestPluginContainer::init($DIC, 'plugin_id');
         TestPluginContainer::get()->register(stdClass::class, fn () => $this->createMock(stdClass::class));
     }
@@ -74,12 +74,39 @@ class PluginContainerTest extends TestCase
         $DIC = $this->createMock(Container::class);
         $DIC
             ->expects($this->once())
+            ->method('offsetExists')
+            ->with($this->equalTo('plugin_id'.'.' . stdClass::class))
+            ->willReturn(true);
+        $DIC
+            ->expects($this->once())
             ->method('offsetGet')
             ->with($this->equalTo('plugin_id'.'.' . stdClass::class))
             ->willReturn($service);
 
         TestPluginContainer::init($DIC, 'plugin_id');
         $this->assertSame($service, TestPluginContainer::get()->plugin()->get(stdClass::class));
+    }
+
+    public function testPluginContainerException()
+    {
+        $this->expectException(PluginContainerException::class);
+
+        $DIC = $this->createMock(Container::class);
+        $DIC
+            ->expects($this->once())
+            ->method('offsetExists')
+            ->with($this->equalTo('plugin_id'.'.' . stdClass::class))
+            ->willReturn(true);
+
+        $DIC
+            ->expects($this->once())
+            ->method('offsetGet')
+            ->willReturnCallback(function () {
+                throw new RuntimeException('Test');
+            });
+
+        TestPluginContainer::init($DIC, 'plugin_id');
+        TestPluginContainer::get()->plugin()->get(stdClass::class);
     }
 
 }

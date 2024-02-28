@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Thojou\Ilias\Plugin\Utils\Test\Traits;
 
-use ilComponentRepositoryWrite;
 use ilDBInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -28,33 +27,9 @@ use PHPUnit\Framework\MockObject\MockObject;
 trait PluginHelperTrait
 {
     /**
-     * @var ilComponentRepositoryWrite&MockObject The mocked Component Repository.
-     */
-    protected ilComponentRepositoryWrite $componentRepository;
-
-    /**
      * @var ilDBInterface&object&MockObject The mocked database interface.
      */
     protected ilDBInterface $db;
-
-    /**
-     * Register a mocked Component Repository for a specific plugin ID.
-     *
-     * @param string $pluginId The ID of the plugin for which to register the Component Repository.
-     *
-     * @return ilComponentRepositoryWrite&MockObject The registered mocked Component Repository.
-     */
-    public function registerComponentRepository(string $pluginId): ilComponentRepositoryWrite
-    {
-        $this->componentRepository = $this->createMock(ilComponentRepositoryWrite::class);
-
-        $this->componentRepository
-            ->method('hasPluginId')
-            ->with($this->equalTo($pluginId))
-            ->willReturn(true);
-
-        return $this->componentRepository;
-    }
 
     /**
      * Register a mocked database interface and configure the core service to use it.

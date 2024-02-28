@@ -48,23 +48,21 @@ class AbstractGUITestCaseTest extends AbstractGUITestCase
         $properties = ['prop1' => 'value1', 'prop2' => 'value2'];
         $queryParameters = ['param1' => 'value1', 'param2' => 'value2'];
 
-        $http = $this->registerHttp();
         $this->mockPostRequest($properties, $queryParameters);
 
         $this->assertEquals('POST', $_SERVER['REQUEST_METHOD']);
-        $this->assertEquals($properties, $http->request()->getParsedBody());
-        $this->assertEquals($queryParameters, $http->request()->getQueryParams());
+        $this->assertEquals($properties, $_POST);
+        $this->assertEquals($queryParameters, $_GET);
     }
 
     public function testMockGETRequest(): void
     {
         $queryParameters = ['param1' => 'value1', 'param2' => 'value2'];
 
-        $http = $this->registerHttp();
         $this->mockGetRequest($queryParameters);
 
         $this->assertEquals('GET', $_SERVER['REQUEST_METHOD']);
-        $this->assertEquals($queryParameters, $http->request()->getQueryParams());
+        $this->assertEquals($queryParameters, $_GET);
     }
 
     public function testSetupCommons(): void
@@ -72,8 +70,6 @@ class AbstractGUITestCaseTest extends AbstractGUITestCase
         $this->setupGUICommons();
 
         $this->assertInstanceOf(Refinery::class, $this->refinery);
-        $this->assertInstanceOf(MockObject::class, $this->componentFactory);
-        $this->assertInstanceOf(MockObject::class, $this->http);
         $this->assertInstanceOf(MockObject::class, $this->ctrl);
         $this->assertInstanceOf(MockObject::class, $this->tpl);
         $this->assertInstanceOf(MockObject::class, $this->language);

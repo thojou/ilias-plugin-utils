@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.6/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.1/phpunit.xsd"
          bootstrap="tests/bootstrap.php"
+         executionOrder="depends,defects"
          backupGlobals="true"
          backupStaticAttributes="true"
          cacheResult="false"
          colors="true"
-         executionOrder="depends,defects"
          convertDeprecationsToExceptions="true"
          failOnRisky="true"
          failOnWarning="true"
+         beStrictAboutOutputDuringTests="true"
+         beStrictAboutTodoAnnotatedTests="true"
          verbose="true">
     <testsuites>
         <testsuite name="Ilias Plugin Utils">
@@ -17,9 +19,9 @@
         </testsuite>
     </testsuites>
 
-    <coverage processUncoveredFiles="true">
-        <include>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">src</directory>
-        </include>
-    </coverage>
+        </whitelist>
+    </filter>
 </phpunit>

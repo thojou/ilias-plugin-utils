@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Thojou\Ilias\Plugin\Utils\DI;
 
+use Exception;
 use Psr\Container\NotFoundExceptionInterface;
 
 /**
@@ -23,6 +24,6 @@ use Psr\Container\NotFoundExceptionInterface;
  * @author Thomas Joußen <tjoussen@databay.de>
  * @see    https://www.php-fig.org/psr/psr-11/#33-psrcontainernotfoundexceptioninterface
  */
-class PluginContainerNotFoundException extends \Exception implements NotFoundExceptionInterface
+class PluginContainerNotFoundException extends Exception implements NotFoundExceptionInterface
 {
 }

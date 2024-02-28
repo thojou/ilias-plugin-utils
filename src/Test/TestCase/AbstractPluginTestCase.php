@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Thojou\Ilias\Plugin\Utils\Test\TestCase;
 
-use ilDBInterface;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Thojou\Ilias\Plugin\Utils\Test\ContainerMockHelperInterface;
 use Thojou\Ilias\Plugin\Utils\Test\Traits\CommonHelperTrait;

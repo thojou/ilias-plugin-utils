@@ -17,8 +17,6 @@ use ILIAS\DI\Container;
 use Psr\Container\ContainerInterface;
 use RuntimeException;
 
-use function is_object;
-
 /**
  * PluginContainerTrait
  *

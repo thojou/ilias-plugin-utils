@@ -2,6 +2,8 @@ name: CI
 
 on:
   push:
+    branches:
+      - release/*
   pull_request:
 
 jobs:
@@ -13,14 +15,27 @@ jobs:
       PLUGIN_PATH: Customizing/global/libs/ilias-plugin-utils
     strategy:
       matrix:
-        php:
-          - 8.0
-          - 7.4
+        include:
+          - php: 7.2
+            ilias: release_7
+            if: BRANCH_NAME == 'release/7'
+          - php: 7.4
+            ilias: release_7
+            if: BRANCH_NAME == 'release/7'
+          - php: 8.0
+            ilias: release_8
+            if: BRANCH_NAME == 'release/8'
+          - php: 8.1
+            ilias: release_8
+            if: BRANCH_NAME == 'release/8'
+          - php: 8.2
+            ilias: release_8
+            if: BRANCH_NAME == 'release/8'
     steps:
       - uses: actions/checkout@v4
         with:
           repository: ILIAS-eLearning/ILIAS
-          ref: release_8
+          ref: ${{ matrix.ilias }}
       - uses: actions/checkout@v4
         with:
           path: ${{ env.PLUGIN_PATH }}
