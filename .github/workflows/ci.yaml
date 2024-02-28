@@ -8,7 +8,6 @@ env:
       "release/7": {"php": ["7.4"], "ilias": ["release_7"]},
       "release/8": {"php": ["8.0"], "ilias": ["release_8"]}
     }
-
 on:
   push:
     branches:
@@ -23,7 +22,7 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - id: set-matrix
-        run: echo "$(echo $MATRIX | jq -c --arg branch $BRANCH_NAME '.[$branch]')" >> $GITHUB_OUTPUT
+        run: echo "matrix=$(echo $MATRIX | jq -c --arg branch $BRANCH_NAME '.[$branch]')" >> "$GITHUB_OUTPUT"
 
   PHPUnit:
     if: "!contains(github.event.head_commit.message, '[CI SKIP]')"
