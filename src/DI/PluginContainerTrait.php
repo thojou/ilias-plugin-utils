@@ -14,29 +14,40 @@ declare(strict_types=1);
 namespace Thojou\Ilias\Plugin\Utils\DI;
 
 use ILIAS\DI\Container;
-
+use Psr\Container\ContainerInterface;
 use RuntimeException;
 
 use function is_object;
 
 /**
- * PluginContainer
+ * PluginContainerTrait
  *
- * This class represents a container for managing services and dependencies related to an ILIAS plugin.
+ * This trait represents a container for managing services and dependencies related to an ILIAS plugin.
+ * The PluginContainerTrait provides the implementation of the PluginContainerInterface.
  *
  * @author Thomas Joußen <tjoussen@databay.de>
  */
-class PluginContainer
+trait PluginContainerTrait
 {
     /**
-     * @var PluginContainer|null A singleton instance of the PluginContainer class.
+     * @var PluginContainerInterface|null A singleton instance of the PluginContainer class.
      */
-    private static ?PluginContainer $instance = null;
+    private static ?PluginContainerInterface $instance = null;
 
     /**
      * @var Container The DI (Dependency Injection) container.
      */
     private Container $dic;
+
+    /**
+     * @var ContainerInterface The core DI container.
+     */
+    private ContainerInterface $core;
+
+    /**
+     * @var ContainerInterface The plugin DI container.
+     */
+    private ContainerInterface $plugin;
 
     /**
      * @var string The ID of the associated plugin.
@@ -49,9 +60,9 @@ class PluginContainer
      * @param Container $dic      The DI container to be used.
      * @param string    $pluginId The ID of the associated plugin.
      *
-     * @return self
+     * @return PluginContainerInterface
      */
-    public static function init(Container $dic, string $pluginId): self
+    public static function init(Container $dic, string $pluginId): PluginContainerInterface
     {
         return self::$instance = new self($dic, $pluginId);
     }
@@ -59,10 +70,10 @@ class PluginContainer
     /**
      * Get the singleton instance of PluginContainer.
      *
-     * @return self
+     * @return PluginContainerInterface
      * @throws RuntimeException If the PluginContainer is not initialized.
      */
-    public static function get(): self
+    public static function get(): PluginContainerInterface
     {
         if (!self::$instance) {
             throw new RuntimeException('PluginContainer not initialized');
@@ -80,12 +91,13 @@ class PluginContainer
     {
         $this->pluginId = $pluginId;
         $this->dic = $dic;
+        $this->plugin = new PluginContainerWrapper($dic, $pluginId);
     }
 
     /**
      * Get the core DI container.
      *
-     * @return Container The DI container.
+     * @return Container The ILIAS DI container.
      */
     public function core(): Container
     {
@@ -93,37 +105,26 @@ class PluginContainer
     }
 
     /**
-     * Get a service from the container.
+     * Get the plugin DI container.
      *
-     * @template T of object
-     *
-     * @param class-string<T> $key The key to access the service.
-     *
-     * @return T                The requested service.
-     * @throws RuntimeException If the service is not found.
+     * @return ContainerInterface The Plugin DI container.
      */
-    public function getService(string $key): object
+    public function plugin(): ContainerInterface
     {
-        $service = $this->dic[$this->pluginId . '.' . $key];
-
-        if (!is_object($service)) {
-            throw new RuntimeException("Service $key not found for plugin $this->pluginId");
-        }
-
-        return $service; //@phpstan-ignore-line
+        return $this->plugin;
     }
 
     /**
      * Register a service in the container.
      *
-     * @param string   $key              The key to access the service.
-     * @param callable $registerFunction The function to register the service.
+     * @param string   $id      The key to access the service.
+     * @param callable $factory The function to register the service.
      *
      * @return self
      */
-    public function register(string $key, callable $registerFunction): self
+    public function register(string $id, callable $factory): self
     {
-        $this->dic[$this->pluginId . '.' . $key] = $registerFunction;
+        $this->dic[$this->pluginId . '.' . $id] = $factory;
 
         return $this;
     }

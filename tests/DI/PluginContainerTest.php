@@ -14,10 +14,12 @@ declare(strict_types=1);
 namespace Thojou\Ilias\Plugin\Utils\Tests\DI;
 
 use stdClass;
-use Thojou\Ilias\Plugin\Utils\DI\PluginContainer;
 use ILIAS\DI\Container;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
+use Thojou\Ilias\Plugin\Utils\DI\PluginContainerNotFoundException;
+use Thojou\Ilias\Plugin\Utils\DI\PluginContainerWrapper;
+use Thojou\Ilias\Plugin\Utils\Tests\DI\Fixtures\TestPluginContainer;
 
 class PluginContainerTest extends TestCase
 {
@@ -28,22 +30,29 @@ class PluginContainerTest extends TestCase
     public function testGetWithoutInit(): void
     {
         $this->expectException(RuntimeException::class);
-        PluginContainer::get();
+        TestPluginContainer::get();
     }
 
     public function testUnknownService(): void
     {
-        $this->expectException(RuntimeException::class);
+        $this->expectException(PluginContainerNotFoundException::class);
 
-        PluginContainer::init($this->createMock(Container::class), 'plugin_id');
-        PluginContainer::get()->getService(stdClass::class);
+        TestPluginContainer::init($this->createMock(Container::class), 'plugin_id');
+        TestPluginContainer::get()->plugin()->get(stdClass::class);
     }
 
     public function testCore(): void
     {
         $DIC = $this->createMock(Container::class);
-        PluginContainer::init($DIC, 'plugin_id');
-        $this->assertSame($DIC, PluginContainer::get()->core());
+        TestPluginContainer::init($DIC, 'plugin_id');
+        $this->assertSame($DIC, TestPluginContainer::get()->core());
+    }
+
+    public function testPlugin(): void
+    {
+        $DIC = $this->createMock(Container::class);
+        TestPluginContainer::init($DIC, 'plugin_id');
+        $this->assertInstanceOf(PluginContainerWrapper::class, TestPluginContainer::get()->plugin());
     }
 
     public function testRegister(): void
@@ -55,8 +64,8 @@ class PluginContainerTest extends TestCase
             ->with($this->equalTo('plugin_id'.'.' . stdClass::class));
 
 
-        PluginContainer::init($DIC, 'plugin_id');
-        PluginContainer::get()->register(stdClass::class, fn () => $this->createMock(stdClass::class));
+        TestPluginContainer::init($DIC, 'plugin_id');
+        TestPluginContainer::get()->register(stdClass::class, fn () => $this->createMock(stdClass::class));
     }
 
     public function testGetService(): void
@@ -69,7 +78,8 @@ class PluginContainerTest extends TestCase
             ->with($this->equalTo('plugin_id'.'.' . stdClass::class))
             ->willReturn($service);
 
-        PluginContainer::init($DIC, 'plugin_id');
-        $this->assertSame($service, PluginContainer::get()->getService(stdClass::class));
+        TestPluginContainer::init($DIC, 'plugin_id');
+        $this->assertSame($service, TestPluginContainer::get()->plugin()->get(stdClass::class));
     }
+
 }
