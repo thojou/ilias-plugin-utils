@@ -1,26 +1,42 @@
 name: CI
 
+env:
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+  PLUGIN_PATH: Customizing/global/libs/ilias-plugin-utils
+  MATRIX: |
+    {
+      "release/7": {"php": ["7.4"], "ilias": ["release_7"]},
+      "release/8": {"php": ["8.0"], "ilias": ["release_8"]}
+    }
+
 on:
   push:
+    branches:
+      - release/*
   pull_request:
 
 jobs:
-  PHPUnit:
-    name: PHPUnit (PHP ${{ matrix.php }})
+  build-matrix:
     if: "!contains(github.event.head_commit.message, '[CI SKIP]')"
-    runs-on: ubuntu-22.04
-    env:
-      PLUGIN_PATH: Customizing/global/libs/ilias-plugin-utils
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - id: set-matrix
+        run: echo "$(echo $MATRIX | jq -c --arg branch $BRANCH_NAME '.[$branch]')" >> $GITHUB_OUTPUT
+
+  PHPUnit:
+    if: "!contains(github.event.head_commit.message, '[CI SKIP]')"
+    needs: build-matrix
+    name: Check (ILIAS ${{ matrix.ilias }} PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
     strategy:
-      matrix:
-        php:
-          - 8.0
-          - 7.4
+      matrix: ${{ fromJson(needs.build-matrix.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v4
         with:
           repository: ILIAS-eLearning/ILIAS
-          ref: release_8
+          ref: ${{ matrix.ilias }}
       - uses: actions/checkout@v4
         with:
           path: ${{ env.PLUGIN_PATH }}

@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Thojou\Ilias\Plugin\Utils\Test\TestCase;
 
 use ILIAS\HTTP\Wrapper\WrapperFactory;
-use ILIAS\Refinery\Factory as Refinery;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;

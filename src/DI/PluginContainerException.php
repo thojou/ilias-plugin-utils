@@ -24,6 +24,6 @@ use Psr\Container\ContainerExceptionInterface;
  * @author Thomas Joußen <tjoussen@databay.de>
  * @see    https://www.php-fig.org/psr/psr-11/#32-psrcontainercontainerexceptioninterface
  */
-class PluginContainerException extends \RuntimeException implements ContainerExceptionInterface
+class PluginContainerException extends Exception implements ContainerExceptionInterface
 {
 }

@@ -10,8 +10,8 @@ with this source code in the file LICENSE.
 TXT;
 
 $finder = PhpCsFixer\Finder::create()
-    ->exclude('vendor')
-    ->in(__DIR__);
+    ->in(__DIR__)
+    ->exclude('vendor');
 
 return (new PhpCsFixer\Config())
     ->setRules([

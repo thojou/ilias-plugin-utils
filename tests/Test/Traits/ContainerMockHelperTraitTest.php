@@ -15,7 +15,6 @@ namespace Thojou\Ilias\Plugin\Utils\Tests\Test\Traits;
 
 use ilComponentRepositoryWrite;
 use ILIAS\DI\Container;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 use Thojou\Ilias\Plugin\Utils\Test\ContainerMockHelperInterface;
