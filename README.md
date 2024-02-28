@@ -1,8 +1,6 @@
 # ILIAS Plugin Utils
 
-![Static Badge](https://img.shields.io/badge/PHP_Version-%3E%3D7.4-blue)
 [![License](https://img.shields.io/github/license/thojou/ilias-plugin-utils)](./LICENSE)
-[![CI](https://github.com/thojou/ilias-plugin-utils/actions/workflows/ci.yaml/badge.svg)](https://github.com/thojou/ilias-plugin-utils/actions/workflows/ci.yaml)
 ![Coverage](https://img.shields.io/badge/coverage-100%25-green)
 ![PHPStan](https://img.shields.io/badge/PHPStan-level%209-brightgreen.svg?style=flat)
 
@@ -11,19 +9,19 @@
 The "ILIAS Plugin Utils" library is a collection of utility classes and traits designed to simplify the development and testing of ILIAS (Integriertes Lern-, Informations- und Arbeitskooperationssystem) plugins. 
 It provides various helper methods and traits to streamline common tasks when building and testing ILIAS plugins.
 
-## Requirements
+## Versions
 
-Before using this library, make sure you meet the following requirements:
-
-- PHP >= 7.4
-- ILIAS >= 8.0
+| Repository Branch | Composer Package Version | ILIAS Compatibility | PHP Compatibility | Status                                                                                                                                                                                |
+|-------------------|--------------------------|---------------------|-------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| release/8         | 8.x                      | release_8           | \>= 8.0           | [![CI](https://github.com/thojou/ilias-plugin-utils/actions/workflows/ci.yaml/badge.svg?branch=release%2F8)](https://github.com/thojou/ilias-plugin-utils/actions/workflows/ci.yaml)  |
+| release/7         | 7.x                      | release_7           | \>= 7.2           | [![CI](https://github.com/thojou/ilias-plugin-utils/actions/workflows/ci.yaml/badge.svg?branch=release%2F7)](https://github.com/thojou/ilias-plugin-utils/actions/workflows/ci.yaml)  |
 
 ## Installation
 
 To install the "ILIAS Plugin Utils" library, you can use Composer. Run the following command in your plugin's root directory:
 
 ```bash
-composer require thojou/ilias-plugin-utils
+composer require thojou/ilias-plugin-utils:^8.0
 ```
 
 ## Usage
